@@ -3,17 +3,59 @@ import PropTypes from 'prop-types';
 
 import './Game.css';
 import Board from '../Board/Board';
+import constants from '../../shared/constants';
 
-const Game = ({ rows, cols, board, cells, interval, isRunning, totalIteration }) => {
-  const boardRef = useRef();
+const Game = ({
+  rows,
+  cols,
+  board,
+  cells,
+  interval,
+  isRunning,
+  totalIteration,
+  saveGameCells,
+  markBoardPoint
+}) => {
+  // const boardRef = useRef();
+
+  const getElementOffset = () => {
+    const boardElement = document.getElementById('board');
+    const rect = boardElement.getBoundingClientRect();
+    const doc = document.documentElement;
+
+    return {
+      x: rect.left + window.pageXOffset - doc.clientLeft,
+      y: rect.top + window.pageYOffset - doc.clientTop
+    };
+  };
+
+  const makeCells = (board, rows, cols) => {
+    const tempCells = [];
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (board[y][x]) {
+          tempCells.push({ x, y });
+        }
+      }
+    }
+    return tempCells;
+  };
+
+  const handleClick = event => {
+    const elemOffset = getElementOffset();
+    const offsetX = event.clientX - elemOffset.x;
+    const offsetY = event.clientY - elemOffset.y;
+    const x = Math.floor(offsetX / constants.CELL_SIZE);
+    const y = Math.floor(offsetY / constants.CELL_SIZE);
+    if (x >= 0 && x <= cols && y >= 0 && y <= rows) {
+      markBoardPoint({ x: y, y: x });
+    }
+    saveGameCells(makeCells(board, rows, cols), true);
+  };
 
   return (
     <div className="game">
-      <Board
-        ref={n => {
-          boardRef.current = n;
-        }}
-      />
+      <Board cells={cells} onSelectCell={handleClick} />
     </div>
   );
 };
