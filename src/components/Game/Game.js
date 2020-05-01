@@ -15,7 +15,8 @@ const Game = ({
   isRunning,
   totalIteration,
   saveGameCells,
-  markBoardPoint
+  markBoardPoint,
+  handleClear
 }) => {
   // const boardRef = useRef();
 
@@ -57,7 +58,7 @@ const Game = ({
   return (
     <div className="game">
       <Board cells={cells} onSelectCell={handleClick} />
-      <Controls />
+      <Controls clear={handleClear} />
     </div>
   );
 };
@@ -74,7 +75,12 @@ Game.propTypes = {
   ).isRequired,
   interval: PropTypes.number.isRequired,
   isRunning: PropTypes.bool.isRequired,
-  totalIteration: PropTypes.number.isRequired
+  totalIteration: PropTypes.number.isRequired,
+  handleClear: PropTypes.func
+};
+
+Game.defaultProps = {
+  handleClear: () => {}
 };
 
 export default Game;

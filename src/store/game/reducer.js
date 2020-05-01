@@ -36,6 +36,13 @@ export default (state = defaultState, action) => {
         cells: !mergeCells ? [...cells] : [...state.cells, ...cells]
       };
     }
+    case types.CLEAR: {
+      return {
+        ...state,
+        board: makeEmptyBoard(),
+        cells: []
+      };
+    }
     default:
       return state;
   }
