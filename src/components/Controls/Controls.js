@@ -27,7 +27,7 @@ const Controls = ({
             Stop
           </button>
         ) : (
-          <button className="button" onClick={run}>
+          <button className="button button-primary" onClick={run}>
             Run
           </button>
         )}

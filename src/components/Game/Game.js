@@ -127,7 +127,7 @@ const Game = ({
       if (timeoutHandler.current) {
         window.clearTimeout(timeoutHandler.current);
         timeoutHandler.current = null;
-        handleClear();
+        // handleClear();
       }
     }
   }, [isRunning]);
