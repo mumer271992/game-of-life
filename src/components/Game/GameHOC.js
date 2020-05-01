@@ -1,7 +1,14 @@
 import { connect } from 'react-redux';
 
 import Game from './Game';
-import { markPoint, saveCells, clear } from '../../store/game/actions';
+import {
+  markPoint,
+  saveCells,
+  clear,
+  run,
+  stop,
+  nextIteration
+} from '../../store/game/actions';
 
 const mapStateToProps = state => ({
   rows: state.game.rows,
@@ -14,8 +21,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  runGame: () => dispatch(run()),
+  stopGame: () => dispatch(stop()),
   markBoardPoint: position => dispatch(markPoint(position)),
   saveGameCells: (cells, mergeCells) => dispatch(saveCells(cells, mergeCells)),
+  nextStep: (board, cells) => dispatch(nextIteration(board, cells)),
   handleClear: () => dispatch(clear())
 });
 

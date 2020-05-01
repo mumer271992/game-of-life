@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Controls = ({ clear, run, stop, totalIteration, interval }) => {
+const Controls = ({
+  clear,
+  run,
+  stop,
+  totalIteration,
+  interval,
+  isRunning
+}) => {
   return (
     <div className="controls">
       <div>
@@ -12,12 +19,15 @@ const Controls = ({ clear, run, stop, totalIteration, interval }) => {
         <span>Interval: </span>
         <span>{interval}</span>
       </div>
-      <button className="button" onClick={run}>
-        Run
-      </button>
-      <button className="button" onClick={stop}>
-        Stop
-      </button>
+      {isRunning ? (
+        <button className="button" onClick={stop}>
+          Stop
+        </button>
+      ) : (
+        <button className="button" onClick={run}>
+          Run
+        </button>
+      )}
       <button className="button" onClick={clear}>
         Clear Board
       </button>
@@ -30,7 +40,8 @@ Controls.propTypes = {
   run: PropTypes.func,
   stop: PropTypes.func,
   totalIteration: PropTypes.number,
-  interval: PropTypes.number
+  interval: PropTypes.number,
+  isRunning: PropTypes.bool
 };
 
 Controls.defaultProps = {
@@ -38,7 +49,8 @@ Controls.defaultProps = {
   run: () => {},
   stop: () => {},
   totalIteration: 0,
-  interval: 100
+  interval: 100,
+  isRunning: false
 };
 
 export default Controls;

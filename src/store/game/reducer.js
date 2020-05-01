@@ -14,12 +14,24 @@ const defaultState = {
   board: makeEmptyBoard(rows, cols),
   cells: [],
   isRunning: false,
-  interval: 300,
+  interval: 500,
   totalIteration: 0
 };
 
 export default (state = defaultState, action) => {
   switch (action.type) {
+    case types.RUN: {
+      return {
+        ...state,
+        isRunning: true
+      };
+    }
+    case types.STOP: {
+      return {
+        ...state,
+        isRunning: false
+      };
+    }
     case types.MARK_POINT: {
       const { position } = action;
       const boardCopy = [...state.board];
@@ -34,6 +46,15 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         cells: !mergeCells ? [...cells] : [...state.cells, ...cells]
+      };
+    }
+    case types.NEXT_ITERATION: {
+      const { cells, board } = action;
+      return {
+        ...state,
+        cells,
+        board,
+        totalIteration: state.totalIteration + 1,
       };
     }
     case types.CLEAR: {

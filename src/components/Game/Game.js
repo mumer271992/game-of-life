@@ -1,10 +1,13 @@
-import React, { useRef } from 'react';
+/* eslint-disable no-shadow */
+/* eslint-disable no-lonely-if */
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import './Game.css';
 import Board from '../Board/Board';
 import Controls from '../Controls/Controls';
 import constants from '../../shared/constants';
+import { makeEmptyBoard } from '../../shared/game';
 
 const Game = ({
   rows,
@@ -14,11 +17,14 @@ const Game = ({
   interval,
   isRunning,
   totalIteration,
+  runGame,
+  stopGame,
+  nextStep,
   saveGameCells,
   markBoardPoint,
   handleClear
 }) => {
-  // const boardRef = useRef();
+  const timeoutHandler = useRef();
 
   const getElementOffset = () => {
     const boardElement = document.getElementById('board');
@@ -43,6 +49,65 @@ const Game = ({
     return tempCells;
   };
 
+  /**
+   * Calculate the number of neighbors at point (x, y)
+   * @param {Array} board
+   * @param {int} x
+   * @param {int} y
+   */
+
+  const calculateNeighbors = (board, x, y) => {
+    let neighbors = 0;
+    const dirs = [
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [0, 1],
+      [1, 1],
+      [1, 0],
+      [1, -1],
+      [0, -1]
+    ];
+    for (let i = 0; i < dirs.length; i++) {
+      const dir = dirs[i];
+      const y1 = y + dir[0];
+      const x1 = x + dir[1];
+
+      if (x1 >= 0 && x1 < cols && y1 >= 0 && y1 < rows && board[y1][x1]) {
+        neighbors++;
+      }
+    }
+
+    return neighbors;
+  }
+
+  const runIteration = board => {
+    console.log("runIteration");
+    const newBoard = makeEmptyBoard(rows, cols);
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const neighbors = calculateNeighbors(board, x, y);
+        if (board[y][x]) {
+          if (neighbors === 2 || neighbors === 3) {
+            newBoard[y][x] = true;
+          } else {
+            newBoard[y][x] = false;
+          }
+        } else {
+          if (!board[y][x] && neighbors === 3) {
+            newBoard[y][x] = true;
+          }
+        }
+      }
+    }
+
+    nextStep(newBoard, makeCells(newBoard, rows, cols));
+    timeoutHandler.current = window.setTimeout(() => {
+      runIteration(newBoard);
+    }, interval);
+  };
+
   const handleClick = event => {
     const elemOffset = getElementOffset();
     const offsetX = event.clientX - elemOffset.x;
@@ -55,10 +120,28 @@ const Game = ({
     saveGameCells(makeCells(board, rows, cols), true);
   };
 
+  useEffect(() => {
+    if (isRunning) {
+      runIteration(board);
+    } else {
+      if (timeoutHandler.current) {
+        window.clearTimeout(timeoutHandler.current);
+        timeoutHandler.current = null;
+        handleClear();
+      }
+    }
+  }, [isRunning]);
+
   return (
     <div className="game">
       <Board cells={cells} onSelectCell={handleClick} />
-      <Controls clear={handleClear} />
+      <Controls
+        clear={handleClear}
+        run={runGame}
+        stop={stopGame}
+        isRunning={isRunning}
+        totalIteration={totalIteration}
+      />
     </div>
   );
 };
@@ -76,11 +159,21 @@ Game.propTypes = {
   interval: PropTypes.number.isRequired,
   isRunning: PropTypes.bool.isRequired,
   totalIteration: PropTypes.number.isRequired,
-  handleClear: PropTypes.func
+  handleClear: PropTypes.func,
+  runGame: PropTypes.func,
+  stopGame: PropTypes.func,
+  nextStep: PropTypes.func,
+  saveGameCells: PropTypes.func,
+  markBoardPoint: PropTypes.func
 };
 
 Game.defaultProps = {
-  handleClear: () => {}
+  handleClear: () => {},
+  runGame: () => {},
+  stopGame: () => {},
+  nextStep: () => {},
+  saveGameCells: () => {},
+  markBoardPoint: () => {}
 };
 
 export default Game;
