@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   markBoardPoint: position => dispatch(markPoint(position)),
-  saveGameCells: (cells, mergeCells) => dispatch(saveCells(cells, mergeCells)),
+  saveGameCells: (cells, mergeCells) => dispatch(saveCells(cells, mergeCells))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

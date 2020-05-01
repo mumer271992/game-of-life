@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import './Game.css';
 import Board from '../Board/Board';
+import Controls from '../Controls/Controls';
 import constants from '../../shared/constants';
 
 const Game = ({
@@ -56,6 +57,7 @@ const Game = ({
   return (
     <div className="game">
       <Board cells={cells} onSelectCell={handleClick} />
+      <Controls />
     </div>
   );
 };
