@@ -1,3 +1,58 @@
 .App {
   text-align: center;
+  max-width: 800px;
+  width: 100%;
+  margin: auto;
+}
+.button {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-color: #6c757d;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.p {
+  padding: 1rem;
+}
+
+.p-t {
+  padding-top: 1rem;
+}
+
+.p-b {
+  padding-bottom: 1rem;
+}
+
+.m {
+  margin: 1rem;
+}
+
+.m-t {
+  margin-top: 1rem;
+}
+
+.m-b {
+  margin-bottom: 1rem;
 }

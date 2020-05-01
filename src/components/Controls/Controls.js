@@ -11,26 +11,30 @@ const Controls = ({
 }) => {
   return (
     <div className="controls">
-      <div>
-        <span>Generations: </span>
-        <span>{totalIteration}</span>
+      <div className="flex flex-row justify-between m-t m-b">
+        <div>
+          <span>Generations: </span>
+          <span>{totalIteration}</span>
+        </div>
+        <div>
+          <span>Interval: </span>
+          <span>{interval}</span>
+        </div>
       </div>
-      <div>
-        <span>Interval: </span>
-        <span>{interval}</span>
+      <div className="flex flex-row justify-between">
+        {isRunning ? (
+          <button className="button" onClick={stop}>
+            Stop
+          </button>
+        ) : (
+          <button className="button" onClick={run}>
+            Run
+          </button>
+        )}
+        <button className="button" onClick={clear}>
+          Clear Board
+        </button>
       </div>
-      {isRunning ? (
-        <button className="button" onClick={stop}>
-          Stop
-        </button>
-      ) : (
-        <button className="button" onClick={run}>
-          Run
-        </button>
-      )}
-      <button className="button" onClick={clear}>
-        Clear Board
-      </button>
     </div>
   );
 };

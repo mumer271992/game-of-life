@@ -7,6 +7,7 @@ function App() {
   return (
     <div className="App">
       <h1>Conway's game of life simple version</h1>
+      <p>Select boxes to create initial pattern</p>
       <Game />
     </div>
   );
